@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Position Calculator</title>
+</head>
+<body>
+<h1>Position Calculator</h1>
+
+<label for="character_input">Enter Character:</label>
+<input type="text" id="character_input" name="character_input" required>
+
+<button onclick="calculatePosition()">Calculate Kanji Position</button>
+
+<div id="result_text"></div>
+
+<script>
+    function calculatePosition() {
+        var characterInput = document.getElementById('character_input').value;
+        if (!characterInput) {
+            alert("Please enter a character.");
+            return;
+        }
+
+        fetch('/calculate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'character_input=' + characterInput,
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('result_text').innerText = data.result_message;
+        });
+    }
+</script>
+</body>
+</html>
